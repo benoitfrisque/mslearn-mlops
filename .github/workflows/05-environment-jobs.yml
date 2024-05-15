@@ -9,6 +9,8 @@ jobs:
   job1:
     name: experiment training
     runs-on: ubuntu-latest
+    environment:
+      name: developement
     steps:
       - name: Check out repo
         uses: actions/checkout@main
@@ -25,6 +27,8 @@ jobs:
     name: production training
     needs: job1
     runs-on: ubuntu-latest
+    environment:
+      name: production
     steps:
       - name: Check out repo
         uses: actions/checkout@main
