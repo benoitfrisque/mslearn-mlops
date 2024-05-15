@@ -1,4 +1,4 @@
-name: Create endpoint and reploy production model to endpoint
+name: Create endpoint and deploy production model to endpoint
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: Create endpoint
-      run: az ml online-endpoint create --name diabetes-endpoint -f src/create-endpoint.yml --workspace-name mslearn-mlops-ws --resource-group mslearn-mlops
+      run: az ml online-endpoint create --name diabetes-endpoint -f src/create_endpoint.yml --workspace-name mslearn-mlops-ws --resource-group mslearn-mlops
   deploy_production_model:
     runs-on: ubuntu-latest
     environment:
@@ -34,4 +34,4 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: Deploy model to endpoint
-      run: az ml model deploy -n diabetes-deployment --endpoint diabetes-endpoint --workspace-name mslearn-mlops-ws --resource-group mslearn-mlops --overwrite
+      run: az ml online-deployment create -f src/deployment.yml -n diabetes-deployment --endpoint diabetes-endpoint --workspace-name mslearn-mlops-ws --resource-group mslearn-mlops
