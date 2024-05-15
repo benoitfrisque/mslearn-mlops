@@ -1,0 +1,33 @@
+name: Create endpoint and reploy production model to endpoint
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create_endpoint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@main
+    - name: Install az ml extension
+      run: az extension add -n ml -y
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: Create endpoint
+      run: az ml online-endpoint create --name diabetes-endpoint -f src/create-endpoint.yml --workspace-name mslearn-mlops-ws --resource-group mslearn-mlops
+  deploy_production_model:
+    runs-on: ubuntu-latest
+    needs: create_endpoint
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@main
+    - name: Install az ml extension
+      run: az extension add -n ml -y
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: Deploy model to endpoint
+      run: az ml model deploy -n diabetes-deployment --endpoint diabetes-endpoint --workspace-name mslearn-mlops-ws --resource-group mslearn-mlops --overwrite
