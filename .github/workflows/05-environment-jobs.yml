@@ -1,0 +1,35 @@
+name: Environment jobs
+
+on: [pull_request]
+
+jobs:
+  job1:
+    name: experiment training
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@main
+      - name: Install az ml extension
+        run: az extension add -n ml -y
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+      - name: Submit job
+        run: az ml job create -f src/job_experiment.yml --resource-group mslearn-mlops --workspace-name mslearn-mlops-ws --stream
+
+  job2:
+    name: production training
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@main
+      - name: Install az ml extension
+        run: az extension add -n ml -y
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+      - name: Submit job
+        run: az ml job create -f src/job_production.yml --resource-group mslearn-mlops --workspace-name mslearn-mlops-ws --stream
