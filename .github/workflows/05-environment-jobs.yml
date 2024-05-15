@@ -1,6 +1,9 @@
 name: Environment jobs
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      main
 
 jobs:
   job1:
