@@ -6,6 +6,8 @@ on:
 jobs:
   create_endpoint:
     runs-on: ubuntu-latest
+    environment:
+      name: production
     steps:
     - name: Check out repo
       uses: actions/checkout@main
@@ -19,6 +21,8 @@ jobs:
       run: az ml online-endpoint create --name diabetes-endpoint -f src/create-endpoint.yml --workspace-name mslearn-mlops-ws --resource-group mslearn-mlops
   deploy_production_model:
     runs-on: ubuntu-latest
+    environment:
+      name: production
     needs: create_endpoint
     steps:
     - name: Check out repo
