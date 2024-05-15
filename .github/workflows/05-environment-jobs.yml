@@ -10,7 +10,7 @@ jobs:
     name: experiment training
     runs-on: ubuntu-latest
     environment:
-      name: developement
+      name: development
     steps:
       - name: Check out repo
         uses: actions/checkout@main
