@@ -1,0 +1,10 @@
+name: Feature-based trigger
+
+on: [pull_request]
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Placeholder
+      run: echo "Will add code checks here in next challenge"
